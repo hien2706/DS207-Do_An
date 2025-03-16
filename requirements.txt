@@ -1,2 +1,7 @@
 Django==4.2.0
+pandas
 psycopg2
+scikit-learn
+joblib
+djangorestframework
+drf-yasg

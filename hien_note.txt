@@ -1,0 +1,79 @@
+
+
+
+https://github.com/docker/awesome-compose/blob/master/official-documentation-samples/django/README.md
+
+
+
+
+
+docker exec -it postgres_db psql -U postgres -d postgres
+\dt
+SELECT * FROM logs_predictionlog;
+
+
+
+
+
+
+
+
+Apply Django migrations: Run the migrations so your database tables are created:
+docker-compose exec web python manage.py makemigrations
+docker-compose exec web python manage.py migrate
+
+    Model choice can be specified among:
+      - "Decision_Tree"
+      - "KNN"
+      - "Logistic_Regression"
+      - "Random_Forest"
+
+curl -X POST -H "Content-Type: application/json" \
+     -d '{
+  "model_choice": "Random_Forest",
+  "data": [
+    {
+      "person_income": 55000,
+      "person_home_ownership": "RENT",
+      "loan_amnt": 10000,
+      "loan_intent": "HOMEIMPROVEMENT",
+      "loan_int_rate": 13.5,
+      "loan_percent_income": 0.20,
+      "previous_loan_defaults_on_file": "No"
+    },
+    {
+      "person_income": 80000,
+      "person_home_ownership": "OWN",
+      "loan_amnt": 15000,
+      "loan_intent": "DEBTCONSOLIDATION",
+      "loan_int_rate": 10.0,
+      "loan_percent_income": 0.15,
+      "previous_loan_defaults_on_file": "Yes"
+    }
+  ]
+}' \
+     http://localhost:8000/api/predict/
+
+curl -X POST -H "Content-Type: application/json" \
+     -H "X-API-Key: ac80b7a55556f5965afb0db96e2065ebf43dd2319506ba6fe6ba5b6cadd1b04f" \
+     -d '[
+           {
+             "person_income": 55000,
+             "person_home_ownership": "RENT",
+             "loan_amnt": 10000,
+             "loan_intent": "HOMEIMPROVEMENT",
+             "loan_int_rate": 13.5,
+             "loan_percent_income": 0.20,
+             "previous_loan_defaults_on_file": "No"
+           },
+           {
+             "person_income": 80000,
+             "person_home_ownership": "OWN",
+             "loan_amnt": 15000,
+             "loan_intent": "DEBTCONSOLIDATION",
+             "loan_int_rate": 10.0,
+             "loan_percent_income": 0.15,
+             "previous_loan_defaults_on_file": "Yes"
+           }
+         ]' \
+     http://localhost:8000/api/predict/
